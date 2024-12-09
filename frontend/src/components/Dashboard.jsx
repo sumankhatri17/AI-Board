@@ -1,6 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
+import Canvas from "./Canvas";
 
 const Dashboard = () => {
+  const [selectedTool, setSelectedTool] = useState("pencil");
+  const [selectedColor, setSelectedColor] = useState("#000000");
+
   return (
     <div className="flex flex-col h-screen">
       {/* Header with the app title */}
@@ -24,16 +28,31 @@ const Dashboard = () => {
                   name="tool"
                   value="pencil"
                   className="form-radio"
-                  defaultChecked
+                  checked={selectedTool === "pencil"}
+                  onChange={() => setSelectedTool("pencil")}
                 />
                 <span className="ml-2">Pencil</span>
               </label>
               <label className="inline-flex items-center">
-                <input type="radio" name="tool" value="line" className="form-radio" />
+                <input
+                  type="radio"
+                  name="tool"
+                  value="line"
+                  className="form-radio"
+                  checked={selectedTool === "line"}
+                  onChange={() => setSelectedTool("line")}
+                />
                 <span className="ml-2">Line</span>
               </label>
               <label className="inline-flex items-center">
-                <input type="radio" name="tool" value="rectangle" className="form-radio" />
+                <input
+                  type="radio"
+                  name="tool"
+                  value="rectangle"
+                  className="form-radio"
+                  checked={selectedTool === "rectangle"}
+                  onChange={() => setSelectedTool("rectangle")}
+                />
                 <span className="ml-2">Rectangle</span>
               </label>
             </div>
@@ -45,7 +64,8 @@ const Dashboard = () => {
                 type="color"
                 id="color-picker"
                 className="h-8 w-12 rounded-md"
-                defaultValue="#000000"
+                value={selectedColor}
+                onChange={(e) => setSelectedColor(e.target.value)}
               />
             </div>
             <div className="flex space-x-2">
@@ -73,10 +93,7 @@ const Dashboard = () => {
           {/* Canvas Area */}
           <div className="flex-1 flex justify-center items-center p-4">
             <div className="w-full h-full max-w-6xl max-h-[600px] bg-white border-2 border-black rounded-md shadow-md p-4">
-              <canvas
-                id="whiteboard"
-                className="w-full h-full"
-              ></canvas>
+              <Canvas selectedTool={selectedTool} selectedColor={selectedColor} />
             </div>
           </div>
         </div>
@@ -91,9 +108,7 @@ const Dashboard = () => {
           <button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md">
             Submit Query
           </button>
-          
         </div>
-
       </div>
     </div>
   );
