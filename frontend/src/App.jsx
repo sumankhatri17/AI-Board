@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Room from "./components/Room";
+import Dashboard from "./components/Dashboard";
 
 const App = () => {
   return (
@@ -11,6 +12,8 @@ const App = () => {
 
         {/* Route for the Room */}
         <Route path="/Room" element={<Room />} />
+        <Route path="/Dashboard" element={<Dashboard />} />
+
       </Routes>
     </Router>
   );
