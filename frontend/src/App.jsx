@@ -2,18 +2,17 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Room from "./components/Room";
 import Dashboard from "./components/Dashboard";
+import Toolbar from './components/Toolbar';
 
 const App = () => {
   return (
     <Router>
       <Routes>
-        {/* Route for the homepage */}
-        <Route path="/" element={<h1>James madarchod</h1>} />
+        <Route path="/" element={<Room />} />
 
-        {/* Route for the Room */}
         <Route path="/Room" element={<Room />} />
         <Route path="/Dashboard" element={<Dashboard />} />
-
+        <Route path="/Toolbar" element={<Toolbar />} />
       </Routes>
     </Router>
   );
