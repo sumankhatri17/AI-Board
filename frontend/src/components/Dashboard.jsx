@@ -8,23 +8,58 @@ const Dashboard = () => {
   const [selectedColor, setSelectedColor] = useState("#000000");
   const [lineWidth, setLineWidth] = useState(2);
 
-  // Added undo, redo, and clear handlers
+  // New states for actions with specific flags
+  const [canvasAction, setCanvasAction] = useState({
+    type: null,
+    payload: null
+  });
+
+  // Canvas history management
+  const [canvasHistory, setCanvasHistory] = useState({
+    past: [],
+    future: []
+  });
+
+  // History change handler
+  const handleHistoryChange = (newHistory) => {
+    setCanvasHistory(newHistory);
+  };
+
+  // Undo handler
   const handleUndo = () => {
-    // Implement undo logic if needed
-    console.log("Undo clicked");
+    // Only trigger undo if there's history to undo
+    if (canvasHistory.past.length > 1) {
+      setCanvasAction({
+        type: 'undo',
+        payload: null
+      });
+    }
   };
 
+  // Redo handler
   const handleRedo = () => {
-    // Implement redo logic if needed
-    console.log("Redo clicked");
+    // Only trigger redo if there's future history
+    if (canvasHistory.future.length > 0) {
+      setCanvasAction({
+        type: 'redo',
+        payload: null
+      });
+    }
   };
 
+  // Clear canvas handler
   const handleClear = () => {
-    // Implement canvas clear logic if needed
-    console.log("Clear canvas");
+    setCanvasAction({
+      type: 'clear',
+      payload: null
+    });
   };
 
- 
+  // Reset action after processing
+  const resetCanvasAction = () => {
+    setCanvasAction({ type: null, payload: null });
+  };
+
   return (
     <div className="flex flex-col h-screen">
       {/* Header with the app title */}
@@ -56,6 +91,10 @@ const Dashboard = () => {
                 selectedTool={selectedTool}
                 color={selectedColor}
                 lineWidth={lineWidth}
+                canvasHistory={canvasHistory}
+                onHistoryChange={handleHistoryChange}
+                canvasAction={canvasAction}
+                onActionComplete={resetCanvasAction}
               />
             </div>
           </div>

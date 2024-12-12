@@ -1,10 +1,19 @@
 import React, { useRef, useEffect, useState } from 'react';
 
-const Canvas = ({ selectedTool, lineWidth, color }) => {
+const Canvas = ({ 
+  selectedTool, 
+  lineWidth, 
+  color, 
+  canvasHistory,
+  onHistoryChange,
+  canvasAction,
+  onActionComplete 
+}) => {
   const canvasRef = useRef(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [startPos, setStartPos] = useState({ x: 0, y: 0 });
 
+  // Initialize canvas
   useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
@@ -17,7 +26,92 @@ const Canvas = ({ selectedTool, lineWidth, color }) => {
     ctx.fillStyle = color;
     ctx.lineWidth = lineWidth;
     ctx.lineCap = 'round';
-  }, [color, lineWidth]);
+  }, []);
+
+ // Save canvas state to history
+ const saveCanvasState = () => {
+  const canvas = canvasRef.current;
+  const imageData = canvas.toDataURL();
+  
+  // Create a copy of current history to avoid direct mutation
+  const newHistory = {
+    past: [...canvasHistory.past, imageData],
+    future: []
+  };
+
+  // Notify parent component about history change
+  onHistoryChange(newHistory);
+};
+
+// Restore canvas from a saved state
+const restoreCanvasState = (imageData) => {
+  const canvas = canvasRef.current;
+  const ctx = canvas.getContext('2d');
+  const image = new Image();
+  image.onload = () => {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(image, 0, 0);
+  };
+  image.src = imageData;
+};
+
+// Handle canvas actions (undo/redo/clear)
+useEffect(() => {
+  if (!canvasAction || !canvasAction.type) return;
+
+  const canvas = canvasRef.current;
+  const ctx = canvas.getContext('2d');
+
+  switch (canvasAction.type) {
+    case 'clear':
+      // Clear canvas and save initial state
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      saveCanvasState();
+      break;
+
+    case 'undo':
+      if (canvasHistory.past.length > 1) {
+        // Remove current state from past
+        const currentState = canvasHistory.past.pop();
+        
+        // Add current state to future for potential redo
+        const newHistory = {
+          past: [...canvasHistory.past],
+          future: [currentState, ...canvasHistory.future]
+        };
+
+        // Restore previous state
+        const previousState = canvasHistory.past[canvasHistory.past.length - 1];
+        restoreCanvasState(previousState);
+
+        // Update history
+        onHistoryChange(newHistory);
+      }
+      break;
+
+    case 'redo':
+      if (canvasHistory.future.length > 0) {
+        // Get the most recent future state
+        const nextState = canvasHistory.future[0];
+        
+        // Create new history
+        const newHistory = {
+          past: [...canvasHistory.past, nextState],
+          future: canvasHistory.future.slice(1)
+        };
+
+        // Restore the next state
+        restoreCanvasState(nextState);
+
+        // Update history
+        onHistoryChange(newHistory);
+      }
+      break;
+  }
+
+  // Notify parent that action is complete
+  onActionComplete();
+}, [canvasAction]);
 
   const startDrawing = (e) => {
     const canvas = canvasRef.current;
@@ -108,6 +202,8 @@ const Canvas = ({ selectedTool, lineWidth, color }) => {
         break;
     }
 
+    // Save canvas state after drawing
+    saveCanvasState();
     setIsDrawing(false);
   };
 
