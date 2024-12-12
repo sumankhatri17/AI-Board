@@ -19,7 +19,7 @@ def process_query():
 
     try:
         # Use the correct method for generating text
-        response = model.generate_content(query)
+        response = model.generate_content(query + "explain in just 20 words")
         generated_text = response.text  # Extract the generated text
         print(generated_text)
         return jsonify({"response": generated_text}), 200
