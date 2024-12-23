@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { Pencil, Eraser, Square, Triangle, Circle, Type, ZoomIn, ZoomOut, Download, Upload, Undo, Redo, Trash } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Select, SelectTrigger, SelectContent, SelectItem } from '@/components/ui/select';
+import { Button } from './ui/Button';
+import { Select, SelectTrigger, SelectContent, SelectItem } from './ui/Select';
 
 const Toolbar = ({ onToolSelect, onLineWidthChange, onColorChange, onUndo, onRedo, onClear }) => {
   const [selectedTool, setSelectedTool] = useState('pencil');

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Canvas from "./Canvas";
 import Toolbar from "./Toolbar";
 import QueryBar from "./query";
-
+import CanvasRoot from "./Infinite Canvas/CanvasRoot";
 const Dashboard = () => {
   const [selectedTool, setSelectedTool] = useState("pencil");
   const [selectedColor, setSelectedColor] = useState("#000000");
@@ -61,7 +61,7 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col h-screen overflow-hidden">
       {/* Header with the app title */}
       <div className="bg-gray-800 text-white p-4 text-center">
         <h1 className="text-2xl font-semibold">
@@ -75,7 +75,7 @@ const Dashboard = () => {
         {/* Toolbar and Canvas Area */}
         <div className="flex flex-col flex-1">
           {/* Updated Toolbar with all required props */}
-          <Toolbar
+          {/* <Toolbar
             onToolSelect={setSelectedTool}
             onColorChange={setSelectedColor}
             onLineWidthChange={setLineWidth}
@@ -84,7 +84,6 @@ const Dashboard = () => {
             onClear={handleClear}
           />
 
-          {/* Canvas Area */}
           <div className="flex-1 flex justify-center items-center p-4">
             <div className="w-full h-full max-w-6xl max-h-[600px] bg-white border-2 border-black rounded-md shadow-md p-4">
               <Canvas
@@ -97,7 +96,9 @@ const Dashboard = () => {
                 onActionComplete={resetCanvasAction}
               />
             </div>
-          </div>
+          </div> */}
+<CanvasRoot/>
+
         </div>
 
       {/*QueryBar */}

@@ -86,10 +86,10 @@ class CanvasStore {
 
   static isCameraInBounds(cameraX, cameraY, cameraZ) {
     //limit screen size
-    const minX = -1000;
-    const maxX = 1000;
-    const minY = -1000;
-    const maxY = 1000;
+    const minX = -10000;
+    const maxX = 10000;
+    const minY = -10000;
+    const maxY = 10000;
     
     return (
       cameraX >= minX &&
@@ -126,7 +126,7 @@ class CanvasStore {
     const newZ = cameraZ * zoomAmount;
     
     //zoom limit 1000
-    if (newZ < 100 || newZ > 1000) return;
+    if (newZ < 100 || newZ > 10000) return;
     
     const screen = this.screen;
     const scale = this.scale;
