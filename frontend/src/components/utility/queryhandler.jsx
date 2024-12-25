@@ -13,6 +13,7 @@ export const onSubmitquery = async (query, setResponseData) => {
     }
 
     const data = await response.json();
+    console.log(data,"dump")
     setResponseData(data.response);
     return data.response;
   } catch (err) {

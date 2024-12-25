@@ -7,6 +7,7 @@ const QueryBar = () => {
 
   const handleQuery = async () => {
     try {
+      console.log(query);
       const response = await onSubmitquery(query, setResponseData);
       console.log(response);
     } catch (err) {

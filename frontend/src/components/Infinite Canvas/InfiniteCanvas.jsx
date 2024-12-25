@@ -49,7 +49,7 @@ useEffect(() => {
       ctx.lineCap = 'round';
     }
   }
-}, [color, lineWidth]); // Adding color and lineWidth to dependencies to reapply them if they change
+}, [ lineWidth]); // Adding color and lineWidth to dependencies to reapply them if they change
 
 
 // Save canvas state to history

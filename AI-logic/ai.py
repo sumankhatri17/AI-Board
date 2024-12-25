@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify
-# from flask_cors import CORS
+from flask_cors import CORS
 
 import google.generativeai as genai
 
@@ -8,7 +8,7 @@ genai.configure(api_key="AIzaSyD6mhNXd_jncSCIUtLP_kSGznr9c_RrzFc")
 model = genai.GenerativeModel("gemini-1.5-flash")
 
 app = Flask(__name__)
-# CORS(app)  # Enable CORS for all routes and origins
+CORS(app)  # Enable CORS for all routes and origins
 
 
 @app.route('/processquery', methods=['GET'])
