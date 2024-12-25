@@ -4,7 +4,6 @@ import { useState } from 'react';
 import React, { memo } from 'react';
 import { RECT_H, RECT_W } from './constants';
 import CanvasStore from './CanvasStore';
-import TextBlock from './TextBlock';
 
 const InfiniteCanvas = ({ frame ,  selectedTool, 
   lineWidth, 
@@ -31,20 +30,7 @@ const canvasRef = useRef(null);
 const [isDrawing, setIsDrawing] = useState(false);
 const [startPos, setStartPos] = useState({ x: 0, y: 0 });
 
-// Initialize canvas
-// useEffect(() => {
-//   const canvas = canvasRef.current;
-//   const ctx = canvas.getContext('2d');
 
-//   // Set initial canvas properties
-//   canvas.width = canvas.offsetWidth;
-//   canvas.height = canvas.offsetHeight;
-
-//   ctx.strokeStyle = color;
-//   ctx.fillStyle = color;
-//   ctx.lineWidth = lineWidth;
-//   ctx.lineCap = 'round';
-// }, []);
 
 useEffect(() => {
   const canvas = canvasRef.current;
@@ -247,35 +233,20 @@ const stopDrawing = (e) => {
 };
 
   return (
-    <div
-      className="w-full h-full bg-pink-400"
-      style={{
-        transform: `scale(${scale.x}, ${scale.y})`,
-      }}
-    >
       <canvas
       ref={canvasRef}
       style={{
-        transform: `scale(${scale.x}, ${scale.y})`,
+        transform: `scale(${scale.x}, ${scale.y})`, // Apply scaling
+        transformOrigin: 'top center', // Ensure zoom is relative to the top-left corner
       }}
-      className="w-full bg-green-300 h-full"
+      
+      className="w-full  bg-green-200  h-full"
       onMouseDown={startDrawing}
       onMouseMove={draw}
       onMouseUp={stopDrawing}
       onMouseLeave={stopDrawing}
     />
-      {texts.map((text, index) => (
-        <TextBlock
-          key={index}
-          text={text}
-          color={colors[index]}
-          left={(index % 3) * rectW}
-          top={Math.floor(index / 3) * rectH}
-          width={rectW}
-          height={rectH}
-        />
-      ))}
-    </div>
+ 
   );
 };
 

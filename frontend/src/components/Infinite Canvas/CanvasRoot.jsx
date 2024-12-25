@@ -90,6 +90,8 @@ const CanvasRoot = () => {
   }, [width, height]);
   
   const frame = useRenderLoop(60);
+  const scale = CanvasStore.scale;
+
   
   return (
     <div className="w-full h-full overflow-hidden">
@@ -102,14 +104,15 @@ const CanvasRoot = () => {
             onClear={handleClear}
           />
       <div
-        className="w-full h-full bg-slate-500  overflow-hidden  my-7"
+        className="w-full h-full  overflow-hidden"
         ref={canvas}
         onWheel={wheelListener}
         onPointerMove={pointerListener}
+     
       >
 
         
-        <InfiniteCanvas frame={frame} canvasREF={canvas}  selectedTool={selectedTool}
+        <InfiniteCanvas frame={frame}  selectedTool={selectedTool}
                 color={selectedColor}
                 lineWidth={lineWidth}
                 canvasHistory={canvasHistory}

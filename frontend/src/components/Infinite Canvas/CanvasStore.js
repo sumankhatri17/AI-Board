@@ -100,7 +100,7 @@ class CanvasStore {
   }
 
   static moveCamera(mx, my) {
-    const scrollFactor = 1.5;
+    const scrollFactor = 3;
     const deltaX = mx * scrollFactor;
     const deltaY = my * scrollFactor;
     const { x, y, z } = this.camera;
