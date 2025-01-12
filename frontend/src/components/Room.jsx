@@ -1,4 +1,8 @@
 import React from "react";
+import { io } from "socket.io-client";
+const socket = io("http://localhost:5000"); 
+import CreateRoom  from "./utility/createroom";
+import JoinRoom from "./utility/joinroom";
 
 const Room = () => {
   return (
@@ -9,40 +13,7 @@ const Room = () => {
           <h2 className="text-3xl font-bold text-center text-blue-600 mb-6">
             Create Room
           </h2>
-          <form>
-            <div className="mb-6">
-              <input
-                type="text"
-                placeholder="Enter your name"
-                className="w-full px-4 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-            <div className="flex items-center mb-6">
-              <input
-                type="text"
-                placeholder="Generate room code"
-                className="w-full px-4 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-              <button
-                type="button"
-                className="px-2 py-3 ml-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700"
-              >
-                Generate
-              </button>
-              <button
-                type="button"
-                className="px-2 py-3 ml-2 text-sm font-medium text-red-800 bg-red-200 rounded-md hover:bg-red-400"
-              >
-                Copy
-              </button>
-            </div>
-            <button
-              type="submit"
-              className="w-full px-5 py-3 text-white bg-blue-600 rounded-md hover:bg-blue-700"
-            >
-              Generate Room
-            </button>
-          </form>
+          <CreateRoom />
         </div>
 
         {/* Join Room */}
@@ -50,28 +21,7 @@ const Room = () => {
           <h2 className="text-3xl font-bold text-center text-blue-600 mb-6">
             Join Room
           </h2>
-          <form>
-            <div className="mb-6">
-              <input
-                type="text"
-                placeholder="Enter your name"
-                className="w-full px-4 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-            <div className="mb-6">
-              <input
-                type="text"
-                placeholder="Enter room code"
-                className="w-full px-4 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-            <button
-              type="submit"
-              className="w-full px-5 py-3 text-white bg-blue-600 rounded-md hover:bg-blue-700"
-            >
-              Join Room
-            </button>
-          </form>
+          <JoinRoom />
         </div>
       </div>
     </div>

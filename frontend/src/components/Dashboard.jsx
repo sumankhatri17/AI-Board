@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect} from "react";
 import Canvas from "./Canvas";
 import Toolbar from "./Toolbar";
 import QueryBar from "./query";

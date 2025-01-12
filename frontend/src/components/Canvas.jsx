@@ -1,4 +1,17 @@
 import React, { useRef, useEffect, useState } from 'react';
+import handleIncomingDraw from "./utility/incomingdata";
+import {io} from 'socket.io-client';
+
+const socket = io('http://localhost:5000'); 
+
+// Helper functions for coordinate normalization
+const normalizeCoordinates = (x, y, canvas) => {
+  const normalized = { x: x / canvas.width, y: y / canvas.height };
+  console.log("Normalization - Input:", { x, y }, "Normalized:", normalized);
+  return normalized;
+};
+
+
 
 const Canvas = ({ 
   selectedTool, 
@@ -26,6 +39,15 @@ const Canvas = ({
     ctx.fillStyle = color;
     ctx.lineWidth = lineWidth;
     ctx.lineCap = 'round';
+    // handleIncomingDraw(ctx,data);
+
+    socket.on("drawData",(data)=> {
+      const ctx = canvas.getContext("2d");
+      handleIncomingDraw(ctx,data);
+    })
+
+    return ()=>
+      socket.off("drawData");
   }, []);
 
  // Save canvas state to history
@@ -125,6 +147,8 @@ useEffect(() => {
 
     setStartPos({ x: offsetX, y: offsetY });
     setIsDrawing(true);
+    const normalized = normalizeCoordinates(offsetX, offsetY, canvas);
+    socket.emit("drawStart",{tool:selectedTool,startX:offsetX,startY:offsetY})
   };
 
   const draw = (e) => {
@@ -133,6 +157,20 @@ useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
     const { offsetX, offsetY } = e.nativeEvent;
+
+    const normalizedStart = normalizeCoordinates(
+      startPos.x,
+      startPos.y,
+      canvas
+    );
+
+    const normalizedEnd = normalizeCoordinates(offsetX, offsetY, canvas);
+    console.log(
+      "Draw Event - Normalized Start:",
+      normalizedStart,
+      "Normalized End:",
+      normalizedEnd
+    );
 
     ctx.strokeStyle = color;
     ctx.fillStyle = color;
@@ -148,6 +186,16 @@ useEffect(() => {
         ctx.clearRect(offsetX - 5, offsetY - 5, 10, 10);
         break;
     }
+
+     socket.emit("draw", {
+       tool: selectedTool,
+       startX: normalizedStart.x,
+       startY: normalizedStart.y,
+       endX: normalizedEnd.x,
+       endY: normalizedEnd.y,
+       color,
+       lineWidth,
+     });
   };
 
   const stopDrawing = (e) => {
@@ -156,6 +204,18 @@ useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
     const { offsetX, offsetY } = e.nativeEvent;
+     const normalizedStart = normalizeCoordinates(
+       startPos.x,
+       startPos.y,
+       canvas
+     );
+     const normalizedEnd = normalizeCoordinates(offsetX, offsetY, canvas);
+     console.log(
+       "Stop Drawing - Normalized Start:",
+       normalizedStart,
+       "Normalized End:",
+       normalizedEnd
+     );
 
     ctx.strokeStyle = color;
     ctx.fillStyle = color;
@@ -201,6 +261,15 @@ useEffect(() => {
         }
         break;
     }
+     socket.emit("drawEnd", {
+       tool: selectedTool,
+       startX: normalizedStart.x,
+       startY: normalizedStart.y,
+       endX: normalizedEnd.x,
+       endY: normalizedEnd.y,
+       color,
+       lineWidth,
+     });
 
     // Save canvas state after drawing
     saveCanvasState();
