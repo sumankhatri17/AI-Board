@@ -170,7 +170,7 @@ const draw = (e) => {
       break;
 
     case 'eraser':
-      ctx.clearRect(offsetX - 5, offsetY - 5, 10, 10);
+      ctx.clearRect(offsetX - 30, offsetY - 30, 50, 50);
       break;
   }
 };
@@ -240,7 +240,7 @@ const stopDrawing = (e) => {
         transformOrigin: 'top center', // Ensure zoom is relative to the top-left corner
       }}
       
-      className="w-full  bg-green-200  h-full"
+      className="w-full  bg-white-100  h-full"
       onMouseDown={startDrawing}
       onMouseMove={draw}
       onMouseUp={stopDrawing}

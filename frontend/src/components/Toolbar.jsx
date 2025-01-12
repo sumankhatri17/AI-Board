@@ -62,26 +62,10 @@ const Toolbar = ({ onToolSelect, onLineWidthChange, onColorChange, onUndo, onRed
         </Button>
       </div>
 
-      {/* Line Width Selector */}
-      <div className="flex items-center space-x-4">
-        <Select value={lineWidth} onChange={(e) => handleLineWidthChange(e.target.value)}>
-          <SelectTrigger>
-            <Button variant="secondary" className="py-1 px-2 text-sm rounded-full border border-gray-300">
-              {lineWidth}px
-            </Button>
-          </SelectTrigger>
-          <SelectContent>
-            {[1, 2, 3, 4, 5].map((width) => (
-              <SelectItem key={width} value={width}>
-                {width}px
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
 
       {/* Color Picker */}
       <div className="flex items-center space-x-2">
+        <span className="text font-medium">Color Picker:</span>
         <input
           type="color"
           value={colorRef.current} // Use colorRef to get the current color
@@ -90,14 +74,9 @@ const Toolbar = ({ onToolSelect, onLineWidthChange, onColorChange, onUndo, onRed
         />
       </div>
 
-      {/* Zoom and Actions */}
+
+      {/*Actions */}
       <div className="flex items-center space-x-4">
-        <Button variant="secondary">
-          <ZoomIn className="h-5 w-5" />
-        </Button>
-        <Button variant="secondary">
-          <ZoomOut className="h-5 w-5" />
-        </Button>
         <Button variant="secondary">
           <Download className="h-5 w-5" />
         </Button>
