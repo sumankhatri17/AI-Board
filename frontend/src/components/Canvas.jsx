@@ -26,7 +26,7 @@ const Canvas = ({
     ctx.fillStyle = color;
     ctx.lineWidth = lineWidth;
     ctx.lineCap = 'round';
-  }, []);
+  }, [color, lineWidth]);
 
  // Save canvas state to history
  const saveCanvasState = () => {

@@ -25,6 +25,15 @@ const Toolbar = ({ onToolSelect, onLineWidthChange, onColorChange, onUndo, onRed
     onColorChange(newColor); // Pass color to parent (if necessary)
   };
 
+  const handleDownload = () => {
+    const canvas = document.querySelector('canvas');
+    const dataUrl = canvas.toDataURL('image/png');
+    const link = document.createElement('a');
+    link.download = 'whiteboard.png';
+    link.href = dataUrl;
+    link.click();
+  };
+
   return (
     <div className="bg-gray-50 shadow-lg p-4 flex items-center justify-between rounded-md border border-gray-200">
       {/* Undo, Redo, and Clear */}
@@ -77,12 +86,14 @@ const Toolbar = ({ onToolSelect, onLineWidthChange, onColorChange, onUndo, onRed
 
       {/*Actions */}
       <div className="flex items-center space-x-4">
-        <Button variant="secondary">
+      <div className="flex items-center space-x-4">
+        <Button variant="secondary" onClick={handleDownload}>
           <Download className="h-5 w-5" />
         </Button>
         <Button variant="secondary">
           <Upload className="h-5 w-5" />
         </Button>
+      </div>
       </div>
     </div>
   );
